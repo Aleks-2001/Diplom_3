@@ -2,6 +2,9 @@ package pageobject.test;
 
 import api.RequestAPI;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
+import elements.ButtonElement;
+import elements.InputElement;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
@@ -9,6 +12,8 @@ import io.restassured.response.ValidatableResponse;
 import model.User;
 import org.junit.After;
 import org.junit.Before;
+import pageobject.LoginPage;
+import pageobject.MainPage;
 
 import java.io.IOException;
 
@@ -21,7 +26,7 @@ public class BaseUITest {
     @Before
     public void startUp() throws IOException {
         initDriver();
-        Configuration.timeout = 4000;
+        Configuration.timeout = 5000;
     }
 
     @After
@@ -55,6 +60,24 @@ public class BaseUITest {
         responseLogOut.log().all()
                 .assertThat().statusCode(200)
                 .and().body("success", equalTo(true));
+    }
+
+
+    @Step("Fill login form and enter")
+    public void fillLoginForm (User user) {
+        InputElement emailInput = new InputElement(LoginPage.emailInputLocator);
+        emailInput.setValue(user.getEmail());
+        InputElement passwordInput = new InputElement(LoginPage.passwordInputLocator);
+        passwordInput.setValue(user.getPassword());
+        ButtonElement registerButton = new ButtonElement(LoginPage.loginButtonLocator);
+        registerButton.clickButton();
+    }
+
+
+    @Step("Check successful login")
+    public void checkSuccessfulLogin () {
+    // Проверяем, что вход осуществлён по факту появления кнопки 'Оформить заказ' на главной странице
+        Selenide.$(MainPage.makeOrderButtonLocator).shouldBe(com.codeborne.selenide.Condition.visible);
     }
 
 

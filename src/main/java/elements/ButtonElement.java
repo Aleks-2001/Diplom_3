@@ -13,6 +13,7 @@ public class ButtonElement {
         buttonElement = $(locator);
     }
 
+
     public void clickButton() {
         buttonElement.shouldBe(enabled);
         buttonElement.scrollIntoView(true);

@@ -88,22 +88,8 @@ public class RegistrationAndLoginTest extends BaseUITest {
             ButtonElement loginButton = new ButtonElement(MainPage.loginButtonLocator);
         loginButton.clickButton();
         });
-
-        Allure.step("Заполняем форму входа", () -> {
-            InputElement emailInput = new InputElement(LoginPage.emailInputLocator);
-            emailInput.setValue(user.getEmail());
-            InputElement passwordInput = new InputElement(LoginPage.passwordInputLocator);
-            passwordInput.setValue(user.getPassword());
-        });
-
-        Allure.step("Нажать кнопку 'Войти'", () -> {
-            ButtonElement registerButton = new ButtonElement(LoginPage.loginButtonLocator);
-            registerButton.clickButton();
-        });
-
-        Allure.step("Проверяем, что вход осуществлён по факту появления кнопки 'Оформить заказ' на главной странице", () -> {
-            Selenide.$(MainPage.makeOrderButtonLocator).shouldBe(com.codeborne.selenide.Condition.visible);
-        });
+        fillLoginForm(user);
+        checkSuccessfulLogin();
     }
 
 
@@ -117,22 +103,8 @@ public class RegistrationAndLoginTest extends BaseUITest {
             ButtonElement personalAccountButton = new ButtonElement(MainPage.personalAccountButtonLocator);
             personalAccountButton.clickButton();
         });
-
-        Allure.step("Заполняем форму входа", () -> {
-            InputElement emailInput = new InputElement(LoginPage.emailInputLocator);
-            emailInput.setValue(user.getEmail());
-            InputElement passwordInput = new InputElement(LoginPage.passwordInputLocator);
-            passwordInput.setValue(user.getPassword());
-        });
-
-        Allure.step("Нажать кнопку 'Войти'", () -> {
-            ButtonElement registerButton = new ButtonElement(LoginPage.loginButtonLocator);
-            registerButton.clickButton();
-        });
-
-        Allure.step("Проверяем, что вход осуществлён по факту появления кнопки 'Оформить заказ' на главной странице", () -> {
-            Selenide.$(MainPage.makeOrderButtonLocator).shouldBe(com.codeborne.selenide.Condition.visible);
-        });
+        fillLoginForm(user);
+        checkSuccessfulLogin();
     }
 
 
@@ -146,22 +118,8 @@ public class RegistrationAndLoginTest extends BaseUITest {
             ButtonElement loginButton = new ButtonElement(RegisterPage.loginButtonLocator);
             loginButton.clickButton();
         });
-
-        Allure.step("Заполняем форму входа", () -> {
-            InputElement emailInput = new InputElement(LoginPage.emailInputLocator);
-            emailInput.setValue(user.getEmail());
-            InputElement passwordInput = new InputElement(LoginPage.passwordInputLocator);
-            passwordInput.setValue(user.getPassword());
-        });
-
-        Allure.step("Нажать кнопку 'Войти'", () -> {
-            ButtonElement registerButton = new ButtonElement(LoginPage.loginButtonLocator);
-            registerButton.clickButton();
-        });
-
-        Allure.step("Проверяем, что вход осуществлён по факту появления кнопки 'Оформить заказ' на главной странице", () -> {
-            Selenide.$(MainPage.makeOrderButtonLocator).shouldBe(com.codeborne.selenide.Condition.visible);
-        });
+        fillLoginForm(user);
+        checkSuccessfulLogin();
     }
 
 
@@ -175,41 +133,18 @@ public class RegistrationAndLoginTest extends BaseUITest {
             ButtonElement loginButton = new ButtonElement(ForgotPasswordPage.loginButtonLocator);
             loginButton.clickButton();
         });
-
-        Allure.step("Заполняем форму входа", () -> {
-            InputElement emailInput = new InputElement(LoginPage.emailInputLocator);
-            emailInput.setValue(user.getEmail());
-            InputElement passwordInput = new InputElement(LoginPage.passwordInputLocator);
-            passwordInput.setValue(user.getPassword());
-        });
-
-        Allure.step("Нажать кнопку 'Войти'", () -> {
-            ButtonElement registerButton = new ButtonElement(LoginPage.loginButtonLocator);
-            registerButton.clickButton();
-        });
-
-        Allure.step("Проверяем, что вход осуществлён по факту появления кнопки 'Оформить заказ' на главной странице", () -> {
-            Selenide.$(MainPage.makeOrderButtonLocator).shouldBe(com.codeborne.selenide.Condition.visible);
-        });
+        fillLoginForm(user);
+        checkSuccessfulLogin();
     }
 
 
     @Test
     @DisplayName("Check of logOut on Personal Account page")
     public void logOutOnPersonalAccountPageTest() {
-        registerAndLogout(user);
+        registerAndLogout(user); // Этот метод вполне подходит, так как все равно после регистрации необходимо войти
         Allure.step("Открыть страницу авторизации", () ->
                 open(LoginPage.Login_Page_URL));
-        Allure.step("Заполняем форму входа", () -> {
-            InputElement emailInput = new InputElement(LoginPage.emailInputLocator);
-            emailInput.setValue(user.getEmail());
-            InputElement passwordInput = new InputElement(LoginPage.passwordInputLocator);
-            passwordInput.setValue(user.getPassword());
-        });
-        Allure.step("Нажать кнопку 'Войти'", () -> {
-            ButtonElement registerButton = new ButtonElement(LoginPage.loginButtonLocator);
-            registerButton.clickButton();
-        });
+        fillLoginForm(user);
         Allure.step("Нажать кнопку 'Личный кабинет' на главной странице", () ->
                 new ButtonElement(MainPage.personalAccountButtonLocator).clickButton());
         Allure.step("Нажать кнопку 'Выйти' в личном кабинете", () ->
@@ -220,14 +155,55 @@ public class RegistrationAndLoginTest extends BaseUITest {
     }
 
 
-//    Переход в личный кабинет
-//    Проверь переход по клику на «Личный кабинет».
-//    Переход из личного кабинета в конструктор
-//    Проверь переход по клику на «Конструктор» и на логотип Stellar Burgers.
+    @Test
+    @DisplayName("Check of click to 'Personal Account' button and open page")
+    public void clickToPersonalAccountButtonTest() {
+        registerAndLogout(user); // Этот метод вполне подходит, так как все равно после регистрации необходимо войти
+        Allure.step("Открыть страницу авторизации", () ->
+                open(LoginPage.Login_Page_URL));
+        fillLoginForm(user);
+        Allure.step("Нажать кнопку 'Личный кабинет' на главной странице", () ->
+                new ButtonElement(MainPage.personalAccountButtonLocator).clickButton());
+
+        Allure.step("Проверка входа в личный кабинет, по факту появления элемента 'История заказов'", () -> {
+            Selenide.$(PersonalAccountPage.historyButtonLocator).shouldBe(com.codeborne.selenide.Condition.visible);
+        });
+    }
 
 
-//    Проверь, что работают переходы к разделам:
-//            «Булки»,
-//            «Соусы»,
-//            «Начинки».
+    @Test
+    @DisplayName("Check of click to 'Конструктор' element in the personal account")
+    public void clickToConstructorButtonTest() {
+        // Регистрируемся и заходим для корректного перехода на страницу личного кабинета.
+        registerAndLogout(user); // Этот метод вполне подходит, так как все равно после регистрации необходимо войти
+        Allure.step("Открыть страницу авторизации", () ->
+                open(LoginPage.Login_Page_URL));
+        fillLoginForm(user);
+        Allure.step("Нажать кнопку 'Личный кабинет' на главной странице", () ->
+                new ButtonElement(MainPage.personalAccountButtonLocator).clickButton());
+        Allure.step("Кликнуть по элементу 'Конструктор' в личном кабинет", () ->
+                new ButtonElement(PersonalAccountPage.constructorLocator).clickButton());
+        Allure.step("Проверка перехода в конструктор, по факту появления элемента 'Соберите бургер'", () -> {
+            Selenide.$(MainPage.elementOfConstructorLocator).shouldBe(com.codeborne.selenide.Condition.visible);
+        });
+    }
+
+
+    @Test
+    @DisplayName("Check of click to Logotype in the personal account")
+    public void clickToLogotypeTest() {
+        // Регистрируемся и входим для корректного перехода на страницу личного кабинета.
+        registerAndLogout(user); // Этот метод вполне подходит, так как все равно после регистрации необходимо войти
+        Allure.step("Открыть страницу авторизации", () ->
+                open(LoginPage.Login_Page_URL));
+        fillLoginForm(user);
+        Allure.step("Нажать кнопку 'Личный кабинет' на главной странице", () ->
+                new ButtonElement(MainPage.personalAccountButtonLocator).clickButton());
+        Allure.step("Кликнуть по элементу 'Логотип' в личном кабинет", () ->
+                new ButtonElement(PersonalAccountPage.logotypeLocator).clickButton());
+        Allure.step("Проверка перехода в конструктор, по факту появления элемента 'Соберите бургер'", () -> {
+            Selenide.$(MainPage.elementOfConstructorLocator).shouldBe(com.codeborne.selenide.Condition.visible);
+        });
+    }
+
 }
