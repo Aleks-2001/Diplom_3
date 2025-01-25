@@ -48,7 +48,7 @@ public class Browser {
 //        options.addArguments("--window-size=1366,768");
 //        options.addArguments("--proxy-bypass-list=<-loopback>");
 //        return options;
-    }
+//    }
 
 
 
