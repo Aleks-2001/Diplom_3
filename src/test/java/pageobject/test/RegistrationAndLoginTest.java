@@ -2,6 +2,7 @@ package pageobject.test;
 
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import model.User;
@@ -9,6 +10,7 @@ import model.UserGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.OutputType;
 import pageobject.*;
 import elements.ButtonElement;
 import elements.InputElement;
@@ -194,16 +196,32 @@ public class RegistrationAndLoginTest extends BaseUITest {
     public void clickToLogotypeTest() {
         // Регистрируемся и входим для корректного перехода на страницу личного кабинета.
         registerAndLogout(user); // Этот метод вполне подходит, так как все равно после регистрации необходимо войти
-        Allure.step("Открыть страницу авторизации", () ->
-                open(LoginPage.Login_Page_URL));
+        Allure.step("Открыть страницу авторизации", () -> {
+                open(LoginPage.Login_Page_URL);
+                attachScreenshot("Открыть страницу авторизации");
+    });
         fillLoginForm(user);
-        Allure.step("Нажать кнопку 'Личный кабинет' на главной странице", () ->
-                new ButtonElement(MainPage.personalAccountButtonLocator).clickButton());
-        Allure.step("Кликнуть по элементу 'Логотип' в личном кабинет", () ->
-                new ButtonElement(PersonalAccountPage.logotypeLocator).clickButton());
+        Allure.step("Нажать кнопку 'Личный кабинет' на главной странице", () -> {
+                new ButtonElement(MainPage.personalAccountButtonLocator).clickButton();
+        attachScreenshot("Нажать кнопку 'Личный кабинет' на главной странице");
+    });
+        Allure.step("Кликнуть по элементу 'Логотип' в личном кабинет", () -> {
+                    new ButtonElement(PersonalAccountPage.logotypeLocator).clickButton();
+                    attachScreenshot("Кликнуть по элементу 'Логотип' в личном кабинет");
+                });
+
         Allure.step("Проверка перехода в конструктор, по факту появления элемента 'Соберите бургер'", () -> {
             Selenide.$(MainPage.elementOfConstructorLocator).shouldBe(com.codeborne.selenide.Condition.visible);
+            attachScreenshot("Проверка перехода в конструктор, по факту появления элемента 'Соберите бургер'");
+
         });
     }
+
+
+    @Attachment(value = "{attachName}", type = "image/png")
+    public byte[] attachScreenshot(String attachName) {
+        return Selenide.screenshot(OutputType.BYTES);
+    }
+
 
 }
