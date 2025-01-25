@@ -46,11 +46,13 @@ public class RegistrationAndLoginTest extends BaseUITest {
             new InputElement(RegisterPage.nameInputLocator).setValue(user.getName());
             new InputElement(RegisterPage.emailInputLocator).setValue(user.getEmail());
             new InputElement(RegisterPage.passwordInputLocator).setValue(user.getPassword());
+            attachScreenshot("");
         });
         Allure.step("Нажать кнопку 'Зарегистрироваться'", () ->
                 new ButtonElement(RegisterPage.registerButtonLocator).clickButton());
         Allure.step("Проверка, что открыта страница входа", () -> {
             Selenide.$(LoginPage.loginHeaderLocator).shouldBe(com.codeborne.selenide.Condition.visible);
+            attachScreenshot("");
         });
     }
 
@@ -75,6 +77,7 @@ public class RegistrationAndLoginTest extends BaseUITest {
         Allure.step("Нажать кнопку 'Зарегистрироваться' и проверяем, что появилось сообщение об ошибке", () -> {
             ButtonElement registerButton = new ButtonElement(RegisterPage.registerButtonLocator);
             registerButton.clickButton();
+            attachScreenshot("");
         Selenide.$(LoginPage.errorMessageLocator).shouldBe(com.codeborne.selenide.Condition.visible);
         });
     }
@@ -89,8 +92,10 @@ public class RegistrationAndLoginTest extends BaseUITest {
         Allure.step("Нажимаем кнопку \"Войти в аккаунт\"", () -> {
             ButtonElement loginButton = new ButtonElement(MainPage.loginButtonLocator);
         loginButton.clickButton();
+            attachScreenshot("");
         });
         fillLoginForm(user);
+        attachScreenshot("");
         checkSuccessfulLogin();
     }
 
