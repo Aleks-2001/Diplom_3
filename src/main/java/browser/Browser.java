@@ -36,18 +36,18 @@ public class Browser {
         }
 
         // Дополнительные настройки браузера
-        Configuration.browserCapabilities.setCapability("browserName", "chrome");
-        Configuration.browserCapabilities.setCapability("goog:chromeOptions", chromeOptions());
-
-    }
-
-    static private ChromeOptions chromeOptions() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--window-size=1366,768");
-        options.addArguments("--proxy-bypass-list=<-loopback>");
-        return options;
+//        Configuration.browserCapabilities.setCapability("browserName", "chrome");
+//        Configuration.browserCapabilities.setCapability("goog:chromeOptions", chromeOptions());
+//
+//    }
+//
+//    static private ChromeOptions chromeOptions() {
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--disable-dev-shm-usage");
+//        options.addArguments("--remote-allow-origins=*");
+//        options.addArguments("--window-size=1366,768");
+//        options.addArguments("--proxy-bypass-list=<-loopback>");
+//        return options;
     }
 
 
